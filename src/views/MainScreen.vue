@@ -1,5 +1,7 @@
 <script>
 import NavigationOptions from '../components/NavigationOptions.vue'
+import Body from '../components/Body.vue'
+
 export default {
   data() {
     return {
@@ -10,7 +12,8 @@ export default {
     }
   },
   components: {
-    NavigationOptions
+    NavigationOptions,
+    Body
   },
   methods: {
     toggleNavigation() {
@@ -45,12 +48,8 @@ export default {
         :class="{ clicked: isSearchClicked }"
       />
     </header>
-    <nav class="navigation" :class="{ show: isMenuClicked }">
-      <NavigationOptions />
-    </nav>
-    <main class="main-content">
-      <slot></slot>
-    </main>
+    <NavigationOptions :isMenuClicked="isMenuClicked" />
+    <Body></Body>
   </div>
 </template>
 
@@ -75,30 +74,6 @@ export default {
   padding-right: 1.5%;
   justify-content: space-between;
   z-index: 100;
-}
-
-.main-content {
-  flex-grow: 1;
-  display: flex;
-}
-
-.navigation {
-  position: fixed;
-  top: 7.5%;
-  left: 0;
-  width: 20%;
-  height: 92.5%; /* Высота навигационного меню равна оставшейся высоте экрана */
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-  padding-left: 1.5%;
-  padding-right: 1.5%;
-  padding-top: 2.5%;
-}
-
-.navigation.show {
-  transform: translateX(0);
 }
 
 .list-icon {
