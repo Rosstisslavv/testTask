@@ -1,4 +1,5 @@
 <script>
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'NavigationOptions',
   props: {
@@ -18,12 +19,19 @@ export default {
       ]
     }
   },
+  computed: mapGetters(['profilesStatus']),
   methods: {
+    ...mapMutations(['updateProfilesStatus']),
     handleClick() {
       this.isPressed = !this.isPressed
     },
     handleSelectOption(option) {
       this.selectedOption = option
+    }
+  },
+  watch: {
+    selectedOption(newValue) {
+      this.updateProfilesStatus(newValue)
     }
   }
 }
@@ -145,5 +153,6 @@ export default {
 .selected {
   color: rgba(16, 76, 129, 1);
   font-weight: bold;
-  font-family: 'Roboto', 'Roboto Bold', sans-serif;}
+  font-family: 'Roboto', 'Roboto Bold', sans-serif;
+}
 </style>

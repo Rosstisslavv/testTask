@@ -75,17 +75,4 @@ export default {
   justify-content: space-between;
   z-index: 100;
 }
-
-.list-icon {
-  transition: transform 0.1s ease;
-  transform: scale(1);
-}
-
-.list-icon:active {
-  transform: scale(0.95);
-}
-
-.list-icon:hover {
-  cursor: pointer;
-}
 </style>
