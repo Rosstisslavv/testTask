@@ -1,8 +1,16 @@
 <script>
 import Dropdown from 'primevue/dropdown'
+import Table from './Table.vue'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'Body',
+  data() {
+    return {
+      selectedNumber: 10,
+      numbers: [1, 2, 3, 4],
+      isMenuOpened: false
+    }
+  },
   computed: {
     ...mapGetters([
       'allProfiles',
@@ -13,9 +21,10 @@ export default {
       'currentPage'
     ])
   },
+  components: { Table },
   methods: {
     ...mapActions(['fetchProfiles']),
-    ...mapMutations(['updateNumOfElements', 'updateCurrentPage']),
+    ...mapMutations(['updateNumOfElements', 'updateCurrentPage', 'updateActionType']),
     fetchData(limit) {
       this.fetchProfiles(limit)
     },
@@ -28,26 +37,25 @@ export default {
       if (this.currentPage !== this.pages) {
         this.updateCurrentPage(this.currentPage + 1)
       }
+    },
+    handleMenuClick() {
+      this.isMenuOpened = !this.isMenuOpened
+    },
+    handleAddClick() {
+      this.updateActionType('add')
+      this.isMenuOpened = false
+    },
+    handleEditClick() {
+      this.updateActionType('edit')
+      this.isMenuOpened = false
+    },
+    handleDeleteClick() {
+      this.updateActionType('delete')
+      this.isMenuOpened = false
     }
   },
   async mounted() {
     this.fetchProfiles()
-  },
-  data() {
-    return {
-      selectedNumber: 10,
-      numbers: [1, 2, 3, 4],
-      tableHeaders: [
-        'Статус',
-        'Имя',
-        'Фамилия',
-        'Компания',
-        'Специальность',
-        'Телефон',
-        'E-mail',
-        'Интересы'
-      ]
-    }
   },
   watch: {
     selectedNumber(newValue) {
@@ -67,32 +75,19 @@ export default {
             <p>{{ profilesStatus }}</p>
             <img src="@/assets/icons/refresh.svg" class="list-icon" @click="fetchProfiles()" />
           </div>
-          <select class="select-header" aria-label="Действия">
-            <option>Добавить</option>
-            <option>Изменить</option>
-            <option>Удалить</option>
-          </select>
+          <div class="select-action">
+            <div class="select-header" @click="handleMenuClick">
+              <p class="actions">Действия</p>
+              <img src="@/assets/icons/VectorWhite.svg" width="9px" height="5px" />
+            </div>
+            <div v-show="isMenuOpened === true" class="select-options-container">
+              <p @click="handleAddClick">Добавить</p>
+              <p @click="handleEditClick">Изменить</p>
+              <p @click="handleDeleteClick">Удалить</p>
+            </div>
+          </div>
         </header>
-        <table>
-          <thead>
-            <tr>
-              <th v-for="(item, index) in tableHeaders" :key="index">{{ item }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in filteredProfiles" :key="index">
-              <td v-if="item.status === true"><img src="@/assets/icons/okStatus.svg" /></td>
-              <td v-else><img src="@/assets/icons/notOkStatus.svg" /></td>
-              <td>{{ item.firstName }}</td>
-              <td>{{ item.lastName }}</td>
-              <td>{{ item.company }}</td>
-              <td>{{ item.jobTitle }}</td>
-              <td>{{ item.phone }}</td>
-              <td>{{ item.email }}</td>
-              <td>{{ item.interests }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <Table></Table>
       </div>
       <footer class="footer">
         <p>Количество элементов на странице:</p>
@@ -147,6 +142,7 @@ header {
   height: 10%;
   display: flex;
   align-self: center;
+  align-items: center;
   width: 95%;
   justify-content: space-between;
   margin-bottom: 3%;
@@ -159,22 +155,27 @@ header p {
   font-family: 'Roboto', sans-serif;
 }
 
-.select-header {
+.select-action {
   width: 13.5%;
-  appearance: none;
-  padding-left: 4%;
-  background-image: url('../assets/icons/VectorWhite.svg');
-  background-repeat: no-repeat;
-  background-position: right 24% bottom 30%;
-  background-color: rgba(15, 76, 130, 1);
+  display: flex;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
-  border-width: 0;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  background-color: rgba(15, 76, 130, 1);
+  position: relative;
 }
 
-.select-header option:first-child {
-  content: 'Действия'; /* Устанавливаем текст для первой опции */
+.select-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  column-gap: 4px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
 }
 
 .row {
@@ -229,24 +230,49 @@ p {
   width: 100%;
   margin-bottom: 20px;
 }
-
-table {
-  width: 95%;
-  align-self: center;
-  border-collapse: collapse;
+.actions {
+  font-size: 14px;
+  line-height: 16.41px;
+  font-weight: 400;
+  color: white;
+  font-family: 'Roboto', sans-serif;
 }
 
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.select-header:hover {
+  cursor: pointer;
 }
 
-th {
-  font-size: 16px;
-  line-height: 18.75px;
-  font-weight: 600;
+.select-options-container p:hover {
+  cursor: pointer;
+  background-color: rgba(237, 237, 237, 1);
+}
+
+.select-options-container {
+  position: absolute;
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 100%;
+  height: auto;
+  top: 85%;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.select-options-container p {
+  width: 85%;
+  margin-left: 5%;
+  margin-right: 5%;
+  font-size: 14px;
+  line-height: 16.41px;
+  font-weight: 400;
+  border-radius: 3px;
+  padding: 10px 5px;
+  color: black;
   font-family: 'Roboto', sans-serif;
 }
 </style>

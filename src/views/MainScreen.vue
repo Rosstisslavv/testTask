@@ -1,21 +1,30 @@
 <script>
 import NavigationOptions from '../components/NavigationOptions.vue'
 import Body from '../components/Body.vue'
+import InputOptions from '../components/InputOptions.vue'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
     return {
+      searchText: '',
       count: 0,
-      isMenuClicked: false,
+      isMenuClicked: true,
       isSearchClicked: false,
-      isListIconClicked: false
+      isListIconClicked: false,
+      showInputField: false
     }
+  },
+  computed: {
+    ...mapGetters(['search'])
   },
   components: {
     NavigationOptions,
-    Body
+    Body,
+    InputOptions
   },
   methods: {
+    ...mapMutations(['updateSearch']),
     toggleNavigation() {
       this.isMenuClicked = !this.isMenuClicked
       this.isSearchClicked = false
@@ -23,8 +32,15 @@ export default {
       this.isListIconClicked = false
     },
     handleSearchClick() {
+      this.showInputField = !this.showInputField
+      this.updateSearch('')
+      this.searchText = ''
       this.isSearchClicked = true
       this.isSearchClicked = false
+    },
+    updateSearchText(event) {
+      this.searchText = event.target.value
+      this.updateSearch(event.target.value)
     }
   }
 }
@@ -40,7 +56,23 @@ export default {
         class="list-icon"
         :class="{ clicked: isListIconClicked }"
       />
+      <div class="input-container" v-if="showInputField">
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Введите текст"
+          v-model="searchText"
+          @input="updateSearchText"
+        />
+        <img
+          src="@/assets/icons/ico_Close.svg"
+          alt="Close Icon"
+          class="close-icon"
+          @click="handleSearchClick"
+        />
+      </div>
       <img
+        v-else
         src="@/assets/icons/search.svg"
         @click="handleSearchClick"
         alt="List Icon"
@@ -50,6 +82,7 @@ export default {
     </header>
     <NavigationOptions :isMenuClicked="isMenuClicked" />
     <Body></Body>
+    <InputOptions></InputOptions>
   </div>
 </template>
 
@@ -74,5 +107,33 @@ export default {
   padding-right: 1.5%;
   justify-content: space-between;
   z-index: 100;
+}
+
+.input-field {
+  width: 85%;
+  height: 20px;
+  padding: 5px;
+  font-size: 16px;
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  width: 250px;
+}
+
+.close-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  right: 2%;
 }
 </style>
