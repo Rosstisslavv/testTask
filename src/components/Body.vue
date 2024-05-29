@@ -1,6 +1,5 @@
 <script>
-import Dropdown from 'primevue/dropdown'
-import Table from './Table.vue'
+import BodyTable from './BodyTable.vue'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'Body',
@@ -21,7 +20,7 @@ export default {
       'currentPage'
     ])
   },
-  components: { Table },
+  components: { BodyTable },
   methods: {
     ...mapActions(['fetchProfiles']),
     ...mapMutations(['updateNumOfElements', 'updateCurrentPage', 'updateActionType']),
@@ -54,7 +53,7 @@ export default {
       this.isMenuOpened = false
     }
   },
-  async mounted() {
+  async created() {
     this.fetchProfiles()
   },
   watch: {
@@ -87,7 +86,7 @@ export default {
             </div>
           </div>
         </header>
-        <Table></Table>
+        <BodyTable></BodyTable>
       </div>
       <footer class="footer">
         <p>Количество элементов на странице:</p>
@@ -174,8 +173,6 @@ header p {
   align-items: center;
   justify-content: center;
   column-gap: 4px;
-  /* padding-top: 10px;
-  padding-bottom: 10px; */
 }
 
 .row {

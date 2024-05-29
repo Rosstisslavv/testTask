@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      isPressed: false,
+      isPressed: true,
       selectedOption: 'Все',
       rowData: [
         { text: 'Все', isFinished: true },

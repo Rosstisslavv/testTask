@@ -1,9 +1,13 @@
 <script>
-import profiles from '@/store/modules/profiles'
+import axios from 'axios'
 import Dropdown from 'primevue/dropdown'
+import Modal from './Modal.vue'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
-  name: 'Body',
+  name: 'BodyTable',
+  components: {
+    Modal
+  },
   computed: {
     ...mapGetters([
       'allProfiles',
@@ -30,7 +34,8 @@ export default {
         'E-mail',
         'Интересы'
       ],
-      profiles: []
+      profiles: [],
+      showModal: false
       // selectedProfile: null
     }
   },
@@ -57,6 +62,18 @@ export default {
     },
     handleChooseProfile(item) {
       this.updateSelectedProfile(item)
+    },
+    async confirmAction() {
+      await axios.delete(`https://retoolapi.dev/q81Avj/data/${this.selectedProfile.id}`)
+      this.updateSelectedProfile(null)
+      this.updateActionType('')
+      this.fetchProfiles()
+      console.log('Действие подтверждено')
+    },
+    cancelAction() {
+      this.updateSelectedProfile(null)
+      this.updateActionType('')
+      console.log('Действие отменено')
     }
   },
   async mounted() {
@@ -69,6 +86,11 @@ export default {
     },
     filteredProfiles(newValue) {
       this.profiles = newValue
+    },
+    selectedProfile(newValue) {
+      if (newValue !== null && this.actionType === 'delete') {
+        this.showModal = true
+      }
     }
   }
 }
@@ -76,6 +98,14 @@ export default {
 
 <template>
   <table>
+    <Modal
+      :title="'Удаление'"
+      :message="'Вы действительно хотите удалить эту запись?'"
+      :show="showModal"
+      @close="showModal = false"
+      :onConfirm="confirmAction"
+      :onCancel="cancelAction"
+    />
     <thead>
       <tr>
         <th v-for="(item, index) in tableHeaders" :key="index">{{ item }}</th>

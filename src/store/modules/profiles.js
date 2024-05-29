@@ -7,7 +7,8 @@ export default {
     page: 1,
     search: '',
     actionType: '',
-    selectedProfile: null
+    selectedProfile: null,
+    isMenuClicked: true
   },
   actions: {
     async fetchProfiles({ commit }) {
@@ -41,6 +42,9 @@ export default {
     },
     updateSelectedProfile(state, selectedProfile) {
       state.selectedProfile = selectedProfile
+    },
+    updateMenuClicked(state, isMenuClicked) {
+      state.isMenuClicked = isMenuClicked
     }
   },
   getters: {
@@ -65,20 +69,23 @@ export default {
     selectedProfile(state) {
       return state.selectedProfile
     },
+    isMenuClicked(state) {
+      return state.isMenuClicked
+    },
     limitedProfiles(state) {
       return state.profiles.slice(page * limit, (page + 1) * limit)
     },
-    filteredProfiles(state) {
+    allFilteredProfiles(state) {
       const filters = {
         Все: (item) => true,
         Обработанные: (item) => item.status,
         Необработанные: (item) => !item.status
       }
       const filter = filters[state.profilesStatus] || filters['Все']
-      let filteredProfiles = state.profiles.filter(filter)
+      let allFilteredProfiles = state.profiles.filter(filter)
 
       if (state.search !== '') {
-        filteredProfiles = filteredProfiles.filter((item) => {
+        allFilteredProfiles = allFilteredProfiles.filter((item) => {
           if (item.firstName) {
             return item.firstName.toLowerCase().includes(state.search.toLowerCase())
           } else {
@@ -86,14 +93,16 @@ export default {
           }
         })
       }
-      return filteredProfiles.slice(
+      return allFilteredProfiles
+    },
+    filteredProfiles(state, getters) {
+      return getters.allFilteredProfiles.slice(
         (state.page - 1) * state.numOfElements,
         state.page * state.numOfElements
       )
     },
-    pages(state) {
-      const filteredProfilesLength = state.filteredProfiles?.length || state.profiles.length
-      return Math.ceil(filteredProfilesLength / state.numOfElements)
+    pages(state, getters) {
+      return Math.ceil(getters.allFilteredProfiles.length / state.numOfElements)
     }
   }
 }

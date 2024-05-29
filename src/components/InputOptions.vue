@@ -97,7 +97,6 @@ export default {
           break
         }
       }
-
       if (isValid) {
         const phoneRegex = /^\+?\d{1,3}?[-. ]?\(?\d{1,3}\)?[-. ]?\d{1,4}[-. ]?\d{1,4}$/
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -153,7 +152,7 @@ export default {
           class="close-icon"
           @click="handleClose"
         />
-        <button type="button" class="clear" @click="clearForm">Очистить</button>
+        <button type="button" class="close" @click="clearForm">Очистить</button>
         <button
           type="button"
           class="submit"
@@ -233,35 +232,7 @@ input {
   align-self: flex-end;
   justify-content: flex-end;
   gap: 20px;
-  margin-top: 90%;
-}
-
-.form-actions button {
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-}
-
-.clear {
-  background-color: white;
-  color: black;
-  border: 1px solid rgba(153, 153, 153, 1);
-}
-
-.clear:hover {
-  background-color: rgba(153, 153, 153, 1);
-}
-
-.submit {
-  background-color: rgba(15, 76, 130, 1);
-  border: none;
-  color: white;
-}
-
-.submit:hover {
-  background-color: #0056b3;
+  margin-top: 65%;
 }
 
 .close-icon {
