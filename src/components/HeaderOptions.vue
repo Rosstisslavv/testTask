@@ -1,6 +1,5 @@
 <script>
 import { mapMutations, mapGetters } from 'vuex'
-
 export default {
   data() {
     return {
@@ -43,7 +42,7 @@ export default {
       src="@/assets/icons/list.svg"
       @click="toggleNavigation"
       alt="List Icon"
-      class="list-icon"
+      class="clickable"
       :class="{ clicked: isListIconClicked }"
     />
     <div class="input-container" v-if="showInputField">
@@ -66,7 +65,7 @@ export default {
       src="@/assets/icons/search.svg"
       @click="handleSearchClick"
       alt="List Icon"
-      class="list-icon"
+      class="clickable"
       :class="{ clicked: isSearchClicked }"
     />
   </header>

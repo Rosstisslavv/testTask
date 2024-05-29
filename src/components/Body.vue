@@ -72,7 +72,7 @@ export default {
         <header>
           <div class="row">
             <p>{{ profilesStatus }}</p>
-            <img src="@/assets/icons/refresh.svg" class="list-icon" @click="fetchProfiles()" />
+            <img src="@/assets/icons/refresh.svg" class="clickable" @click="fetchProfiles()" />
           </div>
           <div class="select-action">
             <div class="select-header" @click="handleMenuClick">
@@ -96,12 +96,12 @@ export default {
         <p>{{ currentPage }} из {{ pages }}</p>
         <img
           src="../assets/icons/leftArrow.svg"
-          class="left-arrow list-icon"
+          class="left-arrow clickable"
           @click="handleLeftClick"
         />
         <img
           src="../assets/icons/leftArrow.svg"
-          class="right-arrow list-icon"
+          class="right-arrow clickable"
           @click="handleRightClick"
         />
       </footer>
@@ -110,7 +110,6 @@ export default {
 </template>
 
 <style scoped>
-/* this.$router.push({ query: { page: this.page, limit: this.limit } }); */
 .main-content {
   position: absolute;
   top: 8%;

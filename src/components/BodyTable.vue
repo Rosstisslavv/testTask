@@ -1,6 +1,5 @@
 <script>
 import axios from 'axios'
-import Dropdown from 'primevue/dropdown'
 import Modal from './Modal.vue'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {

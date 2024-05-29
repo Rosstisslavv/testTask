@@ -3,16 +3,16 @@
   padding: 0;
 }
 
-.list-icon {
+.clickable {
   transition: transform 0.1s ease;
   transform: scale(1);
 }
 
-.list-icon:active {
+.clickable:active {
   transform: scale(0.95);
 }
 
-.list-icon:hover {
+.clickable:hover {
   cursor: pointer;
 }
 
