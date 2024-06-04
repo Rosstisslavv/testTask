@@ -73,7 +73,7 @@ export default {
       return state.isMenuClicked
     },
     limitedProfiles(state) {
-      return state.profiles.slice(page * limit, (page + 1) * limit)
+      return state.profiles.slice(state.page * state.limit, (state.page + 1) * state.limit)
     },
     allFilteredProfiles(state) {
       const filters = {
