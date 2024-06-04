@@ -14,7 +14,7 @@ export default {
     async fetchProfiles({ commit }) {
       const res = await axios.get('https://retoolapi.dev/q81Avj/data')
       const profiles = await res.data
-      console.log(profiles, 'govno')
+      console.log(profiles, 'all')
       commit('updateProfiles', profiles)
     }
   },
